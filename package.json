@@ -9,6 +9,8 @@
   "author": "Kimbo9090",
   "license": "MIT",
   "dependencies": {
-    "electron": "^5.0.3"
+    "electron": "^5.0.3",
+    "youtube-dl": "^2.0.0",
+    "ytdl-core": "^0.29.2"
   }
 }

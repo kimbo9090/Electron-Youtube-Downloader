@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="pretty.css">
+    <link href="https://fonts.googleapis.com/css?family=Archivo+Black&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+    body {
+    background-color: #6200EE;
+    }
+    </style>
+</head>
+
+<body class="animated fadeIn">
+    <h3 class="w3-display-topmiddle" style= "padding-top: 20%; font-family: 'Archivo Black', sans-serif;">
+        Just type an url
+    </h3>
+    <div class ="w3-display-middle">
+        <form>
+            <div>
+            <input type="text" id="url" autofocus>
+            </div>
+        <button class="btn waves-effect waves-light" style="background-color: #03DAC6; padding-left:10%;margin-left: 25%;"type="submit">Download</button>
+        </form>
+    </div>
+    <script>
+      const electron = require('electron');
+        const {ipcRenderer} = electron;
+
+        const form = document.querySelector('form');
+        form.addEventListener('submit', submitForm);
+
+        function submitForm(e) {
+            e.preventDefault();
+            const url = document.querySelector('#url').value;
+            ipcRenderer.send('url:add',url);
+        }
+    </script>
+</body>
+</html>
