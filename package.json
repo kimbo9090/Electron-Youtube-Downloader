@@ -1,0 +1,14 @@
+{
+  "name": "youtubeelectron",
+  "version": "1.0.0",
+  "description": "Youtube Downloader",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Kimbo9090",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^5.0.3"
+  }
+}
