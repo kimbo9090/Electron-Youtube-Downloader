@@ -68,5 +68,10 @@ if (process.env.NODE_ENV !== 'production') {
 }
 // Catch url:add
 ipcMain.on('url:add',function(e,url){
-    ytdl(url).pipe(fs.createWriteStream('video.flv'))
+    console.log(url)
+    // We need to handle if it's a playlist
+    ytdl.getBasicInfo(url, (err, info) =>  {
+        if (err) throw err;
+        console.log(info)
+    })
 })
