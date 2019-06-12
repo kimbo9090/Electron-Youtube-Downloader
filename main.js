@@ -16,6 +16,7 @@ let mainWindow;
 
 app.on('ready', function () {
     mainWindow = new BrowserWindow({
+        icon: __dirname + '/icon.png',
         webPreferences: {
             nodeIntegration: true
         },
@@ -35,6 +36,7 @@ app.on('ready', function () {
     // Insert the Menu
     Menu.setApplicationMenu(mainMenu);
 });
+// Icon
 
 
 
