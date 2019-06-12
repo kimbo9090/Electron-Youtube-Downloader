@@ -65,7 +65,6 @@
             const url = document.querySelector('#url').value;
             const format = document.querySelector('input[name="group1"]:checked').value;
 
-            console.log(format);
             // Check if the url is valid before we send it to the backend
             if (re.test(url)) {
                 // Disable enter key when downloading
@@ -74,7 +73,7 @@
                 }
                 // Disable submit button when downloading
                 document.getElementById("subBtn").disabled = true;
-                ipcRenderer.send('url:add', url);
+                ipcRenderer.send('url:add', url, format);
             } else {
                 // If invalid url, not send and display message
                 const itemText = document.createElement("p")
@@ -88,7 +87,7 @@
             }
 
         }
-        // When the download start, prevent from pushing download egain
+        // When the download start, prevent from pushing download again
         ipcRenderer.on('activate:button', function () {
             document.getElementById("subBtn").disabled = false;
         });

@@ -9,7 +9,10 @@
   "author": "Kimbo9090",
   "license": "MIT",
   "dependencies": {
+    "@microlink/youtube-dl": "^2.0.0",
     "electron": "^5.0.3",
+    "ffmpeg": "0.0.4",
+    "fluent-ffmpeg": "^2.1.2",
     "youtube-dl": "^2.0.0",
     "ytdl-core": "^0.29.2"
   }
