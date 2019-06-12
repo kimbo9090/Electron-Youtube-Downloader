@@ -1,41 +1,98 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <link rel="stylesheet" href="pretty.css">
     <link href="https://fonts.googleapis.com/css?family=Archivo+Black&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <style>
-    body {
-    background-color: #6200EE;
-    }
+        body {
+            background-color: #6200EE;
+        }
     </style>
 </head>
 
 <body class="animated fadeIn">
-    <h3 class="w3-display-topmiddle" style= "padding-top: 20%; font-family: 'Archivo Black', sans-serif;">
+    <h3 class="w3-display-topmiddle" style="padding-top: 10%; font-family: 'Archivo Black', sans-serif;">
         Just type an url
     </h3>
-    <div class ="w3-display-middle">
+    <div class="w3-display-middle">
         <form>
-            <div>
-            <input type="text" id="url" autofocus>
+            <div class="md-radio md-radio-inline">
+                <p>
+                    <label>
+                        <input name="group1" type="radio" value="audio" checked />
+                        <span>Audio</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="group1" type="radio" value="video" />
+                        <span>Video</span>
+                    </label>
+                </p>
+
             </div>
-        <button class="btn waves-effect waves-light" style="background-color: #03DAC6; padding-left:10%;margin-left: 25%;"type="submit">Download</button>
+
+            <div>
+                <input type="text" id="url" autofocus>
+            </div>
+            <button class="btn waves-effect waves-light"
+                style="background-color: #03DAC6; padding-left:10%;margin-left: 25%;" id="subBtn"
+                type="submit">Download</button>
         </form>
     </div>
+    <div id='inviDiv' class='w3-display-bottommiddle'>
+    </div>
     <script>
-      const electron = require('electron');
-        const {ipcRenderer} = electron;
+        // Regular expression for youtube urls
+        var re = new RegExp('^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+')
+        const electron = require('electron');
+        const { ipcRenderer } = electron;
 
+        const div = document.getElementById("inviDiv");
+        const btn = document.getElementById("subBtn");
         const form = document.querySelector('form');
         form.addEventListener('submit', submitForm);
 
+        // Take the value from the form
         function submitForm(e) {
+            // We clear the HTML in case there's still some message
+            div.innerHTML = '';
             e.preventDefault();
+            // We save the form values
             const url = document.querySelector('#url').value;
-            ipcRenderer.send('url:add',url);
+            const format = document.querySelector('input[name="group1"]:checked').value;
+
+            console.log(format);
+            // Check if the url is valid before we send it to the backend
+            if (re.test(url)) {
+                // Disable enter key when downloading
+                if (e.which == 13) {
+                    event.preventDefault();
+                }
+                // Disable submit button when downloading
+                document.getElementById("subBtn").disabled = true;
+                ipcRenderer.send('url:add', url);
+            } else {
+                // If invalid url, not send and display message
+                const itemText = document.createElement("p")
+                var node = document.createTextNode("Invalid URL format");
+                itemText.appendChild(node);
+                var elem = document.getElementById("inviDiv");
+                elem.appendChild(itemText);
+                // We give the inserted p some attributes
+                elem.style.marginBottom = "159px";
+                elem.style.fontFamily = "Archivo Black,sans-serif";
+            }
+
         }
+        // When the download start, prevent from pushing download egain
+        ipcRenderer.on('activate:button', function () {
+            document.getElementById("subBtn").disabled = false;
+        });
     </script>
 </body>
+
 </html>

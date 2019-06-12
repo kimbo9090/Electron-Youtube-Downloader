@@ -16,3 +16,7 @@
     -webkit-animation-duration: 4s;
     animation-duration: 4s;
  }
+ .dogs {
+  
+   display: inline !important;
+ }

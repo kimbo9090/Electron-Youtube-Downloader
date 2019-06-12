@@ -70,8 +70,13 @@ if (process.env.NODE_ENV !== 'production') {
 ipcMain.on('url:add',function(e,url){
     console.log(url)
     // We need to handle if it's a playlist
-    ytdl.getBasicInfo(url, (err, info) =>  {
+    ytdl.getInfo(url, (err,info)=> {
+        
         if (err) throw err;
-        console.log(info)
+        let title = info.title;
+        // If we want audio
+        ytdl('http://www.youtube.com/watch?v=A02s8omM_hI')
+        .pipe(fs.createWriteStream('video.flv'));
+        mainWindow.webContents.send('activate:button');
     })
 })
