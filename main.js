@@ -89,12 +89,10 @@ ipcMain.on('url:add', function (e, url, format) {
                 filter: (format) => format.container === `mp4`
             })
             // We create a data stream for downloading the video, when it's end, we activate the download button
-            .pipe(fs.createWriteStream('videos/' + Date.now() + '.mp4')).on('end', () => { // This will go on until the file process is fully ended
+            // There was a bug here, now it's fixed
+            .pipe(fs.createWriteStream('videos/' + Date.now() + '.mp4'))
+            .on('finish', function () { // This will go on until the file process is fully ended
                 mainWindow.webContents.send('activate:button');
-            }).on('progress',(progress)=> { 
-                // Send the progress to the html
-                console.log('from video',progress.timemark)
-                mainWindow.webContents.send('progress:bar', progress.timemark);
             });
     } else if (format == 'audio') {
         const stream = ytdl(url, {
