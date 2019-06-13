@@ -45,12 +45,15 @@
     </div>
     <div id='inviDiv' class='w3-display-bottommiddle'>
     </div>
+    <div id='inviPro' class='w3-display-bottommiddle'>
+        <p id='inviP'></p>
+    </div>
     <script>
         // Regular expression for youtube urls
         var re = new RegExp('^(http(s)?:\/\/)?((w){3}.)?youtu(be|.be)?(\.com)?\/.+')
         const electron = require('electron');
         const { ipcRenderer } = electron;
-
+        const { ipcMain } = electron;
         const div = document.getElementById("inviDiv");
         const btn = document.getElementById("subBtn");
         const form = document.querySelector('form');
@@ -91,6 +94,13 @@
         ipcRenderer.on('activate:button', function () {
             document.getElementById("subBtn").disabled = false;
         });
+
+        
+        // Catch progress bar and displays it
+        ipcRenderer.on('progress:bar', function(e,data) {
+            document.getElementById('inviP').innerHTML = data
+            console.log(data.msg)
+        })
     </script>
 </body>
 
