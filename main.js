@@ -28,7 +28,8 @@ app.on('ready', function () {
         webPreferences: {
             nodeIntegration: true
         },
-        title: 'Youtube Downloader'
+        title: 'Youtube Downloader',
+        resizable: false
     });
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'mainWindow.html'),
@@ -81,7 +82,7 @@ if (process.env.NODE_ENV !== 'production') {
 // Catch url:add
 ipcMain.on('url:add', function (e, url, format) {
     // TODO Handle if it's a playlist
-
+    console.log(format);
     if (format == 'video') {
         console.log('estoy en video')
         // We download the file in .mp4 format
@@ -101,9 +102,11 @@ ipcMain.on('url:add', function (e, url, format) {
         // Download in .mp4 format and do a conversion to .mp3
         ffmpeg(stream).audioBitrate('128k').format('mp3').save('videos/' + Date.now() + '.mp3').on('end', () => { // This will go on until the file process is fully ended
             mainWindow.webContents.send('activate:button');
-        }).on('progress', (progress) => {
+        }).on('progress', function(progress) {
             // Send the progress to the html
-            mainWindow.webContents.send('progress:bar', progress.timemark);
+            console.log('He entrado aqui otra vez eso creo bro');
+            console.log(progress)
+            mainWindow.webContents.send('progress:bar', progress.percent);
 
         });
 

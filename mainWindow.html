@@ -19,7 +19,7 @@
     </h3>
     <div class="w3-display-middle">
         <form>
-            <div class="md-radio md-radio-inline">
+            <div class="md-radio md-radio-inline" style="display: inline-flex; padding-left: 35px;">
                 <p>
                     <label>
                         <input name="group1" type="radio" value="audio" checked />
@@ -27,7 +27,7 @@
                     </label>
                 </p>
                 <p>
-                    <label>
+                    <label style="margin-left: 30px;">
                         <input name="group1" type="radio" value="video" />
                         <span>Video</span>
                     </label>
@@ -47,6 +47,10 @@
     </div>
     <div id='inviPro' class='w3-display-bottommiddle'>
         <p id='inviP'></p>
+    </div>
+    <div class="w3-display-bottommiddle" id="load" style="margin-bottom: 140px;">
+        <div></div>
+        <div></div>
     </div>
     <script>
         // Regular expression for youtube urls
@@ -76,6 +80,7 @@
                 }
                 // Disable submit button when downloading
                 document.getElementById("subBtn").disabled = true;
+
                 ipcRenderer.send('url:add', url, format);
             } else {
                 // If invalid url, not send and display message
@@ -93,13 +98,15 @@
         // When the download start, prevent from pushing download again
         ipcRenderer.on('activate:button', function () {
             document.getElementById("subBtn").disabled = false;
+            document.getElementById("load").classList.remove('lds-ripple');
+            document.getElementById('inviP').innerHTML = 'Your download is completed'
         });
 
-        
+
         // Catch progress bar and displays it
-        ipcRenderer.on('progress:bar', function(e,data) {
+        ipcRenderer.on('progress:bar', function (e, data) {
+            document.getElementById("load").classList.add('lds-ripple');
             document.getElementById('inviP').innerHTML = data
-            console.log(data.msg)
         })
     </script>
 </body>
